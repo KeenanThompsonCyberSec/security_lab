@@ -16,10 +16,15 @@
 - Banner /etc/issue.net
 
 ## Banner (/etc/issue.net)
+
 ###############################################
+
 #       🔵  CYBERSECURITY PRACTICE LAB  🔵     #
+
 #   Unauthorized access is boring. Don’t.      #
+
 #   All actions are logged & audited.          #
+
 ###############################################
 
 ## Dynamic MOTD Script (/etc/update-motd.d/99-custom)
@@ -35,11 +40,17 @@ echo "-------------------------------------------"
 
 cat << 'EOF'
 ┌───────────────────────────────────────────┐
+
 │   Keenan’s Cyber Defense Playground 🛡️     │
+
 │   SSH events logged via auditd + journald.│
+
 │   Unauthorized actions are automatically   │
+
 │   flagged as “skill issue.”               │
+
 └───────────────────────────────────────────┘
+
 EOF
 
 ## Commands Executed
