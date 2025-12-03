@@ -1,4 +1,4 @@
-# SSH Hardening Notes — Ubuntu Security Lab (Keenan)
+# SSH Hardening Notes 
 
 ## Modified Files
 - /etc/ssh/sshd_config
