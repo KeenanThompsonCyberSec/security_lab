@@ -1,4 +1,4 @@
-# Auditd Configuration & Monitoring Notes — Ubuntu Security Lab (Keenan)
+# Auditd Configuration & Monitoring Notes
 
 ## Overview
 Auditd is configured as the host-level audit framework for monitoring critical
