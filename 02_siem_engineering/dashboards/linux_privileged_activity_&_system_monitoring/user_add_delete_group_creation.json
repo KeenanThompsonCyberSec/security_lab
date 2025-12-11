@@ -1,0 +1,7 @@
+index=linux sourcetype=linux_secure ("useradd[" OR "groupadd[" OR "usermod[" OR "groupdel[" OR "userdel[")
+| rex "useradd\[\d+\]: new user: name=(?<new_user>\S+)"
+| rex "groupadd\[\d+\]: new group: name=(?<new_group>\S+)"
+| rex "usermod\[\d+\]: change user '(?<mod_user>\S+)'"
+| rex "userdel\[\d+\]: delete user '(?<del_user>\S+)'"
+| eval event_type=case(isnotnull(new_user), "User Created", isnotnull(new_group), "Group Created", isnotnull(mod_user), "User Modified", isnotnull(del_user), "User Deleted", 1=1, "Other")
+| table _time event_type new_user new_group mod_user del_user host
