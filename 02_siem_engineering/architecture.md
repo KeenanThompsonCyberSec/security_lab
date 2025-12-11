@@ -19,28 +19,29 @@ The architecture aggregates Linux security telemetry from multiple log sources, 
             |  
             v  
 +-------------------------------+  
-| Splunk Indexer / Search Head |  
+| Splunk Indexer / Search Head  |  
 +-------------------------------+  
-| Index: index=linux           |  
-| Sourcetypes:                 |  
-|  - linux_secure              |  
-|  - linux_audit               |  
+| Index: index=linux            |  
+| Sourcetypes:                  |  
+|  - linux_secure               |  
+|  - linux_audit                |  
 +-------------------------------+  
             |  
             v  
-+-----------------------+  
++------------------------+  
 | Analytics & Detections |  
-+-----------------------+  
++------------------------+  
 | - Authentication Dash  |  
 | - Privileged Activity  |  
 | - Detection Rules      |  
-+-----------------------+  
++------------------------+  
 ```
 3. Log Sources & Normalization
+
 3.1 Authentication Events (sourcetype=linux_secure)
 
 Collected data includes:
-
+```
 SSH login successes and failures
 
 Public key authentication
@@ -50,19 +51,24 @@ Password authentication
 Invalid user attempts
 
 PAM session events
-
+```
 Normalized fields:
+```
++-------------------------------------------+
+|   Field	            Description         |
++-------------------------------------------+
+|   _time	         Event timestamp        |
+|   user	         Account involved       |
+|   src_ip	         Remote source address  |
+|   Country	         Geolocation lookup     |
+|   action	         success / failure      |
++-------------------------------------------+
+```
 
-Field	Description
-_time	Event timestamp
-user	Account involved
-src_ip	Remote source address
-Country	Geolocation lookup
-action	success / failure
 3.2 Sudo Privileged Activity
 
 Parsed telemetry includes:
-
+```
 sudo command execution
 
 session open / close
@@ -70,22 +76,22 @@ session open / close
 UID transitions
 
 Terminal and working-directory context
-
+```
 Normalized fields:
 ```
 +---------------------------------------------+
 |  Field	            Description           |
 +---------------------------------------------+
 |  user	               Sudoing user           |
-|  cmd	Extracted      command               |
-|  sudo_count	       Aggregated usage count  |
+|  cmd	Extracted      command                |
+|  sudo_count	       Aggregated usage count |
 |  tty	Terminal       context                |
 +---------------------------------------------+
 ```
 3.3 auditd System Activity (sourcetype=linux_audit)
 
 Captured behaviors include:
-
+```
 execve process execution
 
 file modification events
@@ -93,16 +99,16 @@ file modification events
 access to monitored directories
 
 execution of sensitive binaries
-
+```
 Normalized fields:
 ```
 +------------------------------------+
-|  Field	         Description    |
+|  Field	         Description     |
 +------------------------------------+
-|  exe	           Binary executed  |
-|  uid	           User ID          |
-|  audit_key	   auditd rule key  |
-|  exec_count	   Occurrence count | 
+|  exe	           Binary executed   |
+|  uid	           User ID           |
+|  audit_key	   auditd rule key   |
+|  exec_count	   Occurrence count  | 
 +------------------------------------+
  ```
 4. Index & Sourcetype Strategy
@@ -161,9 +167,9 @@ This dashboard correlates auth, sudo, and auditd datasets to surface privileged 
 6. Detection Content
 
 All detections are implemented as Splunk SPL queries and stored under
-
-/02_siem_engineering/detections/.
-
+```
+/02_siem_engineering/dashboards/.
+```
 6.1 Privilege Escalation Detection
 
 Monitors repeated sudo use and anomalous commands.
@@ -191,9 +197,9 @@ index=linux sourcetype=linux_secure "Failed password"
 | where failed_logins >= 5
 ```
 6.4 Permission Change Monitoring
-
+```
 Monitors chmod/chown/setuid-related audit events.
-
+```
 6.5 User Account or PAM Policy Modification
 
 Tracks modifications to:
@@ -205,18 +211,17 @@ Tracks modifications to:
 /etc/pam.d/*
 ```
 7. Dashboard–Detection Mapping
-
-Security Function	Logs Used	Dashboard	Detection Coverage
-
-SSH access monitoring	linux_secure	Linux Auth Overview	Success/failure anomalies
-
-Privileged activity	linux_secure	Privileged Activity	Sudo escalation, command risk
-
-Process execution	linux_audit	Privileged Activity	Suspicious exec patterns
-
-Geographic access	iplocation + auth logs	Linux Auth Overview	Unusual origin, travel anomalies
-
-Account changes	linux_secure	Privileged Activity	New/removed users, PAM edits
+```
++----------------------------------------------------------------------------------------------------------------------------------------+
+|    Security Function	            Logs Used	                        Dashboard	                     Detection Coverage              |
++----------------------------------------------------------------------------------------------------------------------------------------+
+|   SSH access monitoring	        linux_secure	                Linux Auth Overview	            Success/failure anomalies            |
+|   Privileged activity	            linux_secure	                Privileged Activity	            Sudo escalation, command risk        |
+|   Process execution	            linux_audit	                    Privileged Activity	            Suspicious exec patterns             |
+|   Geographic access	            iplocation + auth logs	        Linux Auth Overview	            Unusual origin, travel anomalies     |
+|   Account changes	                linux_secure	                Privileged Activity	            New/removed users, PAM edits         |
++----------------------------------------------------------------------------------------------------------------------------------------+
+```
 
 8. Design Rationale
 
