@@ -1,0 +1,5 @@
+index=linux sourcetype=linux_secure "Failed password for"
+| rex "Failed password for(?: invalid user)? (?<user>\S+) from (?<src_ip>\S+)"
+| iplocation src_ip
+| stats count AS failed_logins by Country
+| sort - failed_logins
