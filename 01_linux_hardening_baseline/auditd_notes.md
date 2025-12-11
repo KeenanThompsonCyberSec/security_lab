@@ -231,7 +231,7 @@ sudo ausearch -k process_exec | tail -n 20
 
 ---
 
-# 🔥 **Triggered Events (Evidence)**
+#  **Triggered Events (Evidence)**
 
 
 ### **1. SSH Configuration Change (ssh_config)**
