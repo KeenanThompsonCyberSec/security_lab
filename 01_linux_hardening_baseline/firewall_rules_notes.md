@@ -21,7 +21,7 @@ sudo ufw status verbose
 
 ## Allowed Inbound Traffic
 - 22/tcp (SSH) — for remote management  
-  - Allowed from all sources (lab environment)
+  - Allowed from all sources (sandbox environment)
 
 ## Observed Duplicate Entries
 The raw output showed duplicate entries for IPv4 and IPv6:
@@ -41,10 +41,11 @@ sudo ufw allow 22/tcp comment "SSH access"
 This will leave a single IPv4/IPv6 rule for SSH.
 
 ## Validation Commands
+```
 sudo ufw status verbose
 sudo ss -tulnp | grep ssh
 sudo tail -n 30 /var/log/ufw.log
-
+```
 ## Notes / Rationale
 - SSH is the only required ingress for management of the lab VM.
 - All other ports remain blocked to reduce attack surface.
