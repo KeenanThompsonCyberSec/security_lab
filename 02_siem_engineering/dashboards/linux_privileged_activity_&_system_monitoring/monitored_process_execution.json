@@ -1,0 +1,3 @@
+index=linux sourcetype=auditd type=EXECVE
+| stats count AS exec_count BY _time, exe, auid, uid
+| sort -_time
