@@ -16,18 +16,19 @@
 - Banner /etc/issue.net
 
 ## Banner (/etc/issue.net)
+```
+##############################################
 
-###############################################
+#    🔵  CYBERSECURITY PRACTICE LAB  🔵     #
 
-#       🔵  CYBERSECURITY PRACTICE LAB  🔵     #
+#    Unauthorized access is boring. Don’t.   #
 
-#   Unauthorized access is boring. Don’t.      #
+#      All actions are logged & audited.     #
 
-#   All actions are logged & audited.          #
-
-###############################################
-
+##############################################
+```
 ## Dynamic MOTD Script (/etc/update-motd.d/99-custom)
+```
 #!/bin/bash
 
 echo "-------------------------------------------"
@@ -39,24 +40,25 @@ grep "Failed password" /var/log/auth.log | wc -l
 echo "-------------------------------------------"
 
 cat << 'EOF'
-┌───────────────────────────────────────────┐
+┌──────────────────────────────────────────-─┐
 
 │   Keenan’s Cyber Defense Playground 🛡️     │
 
-│   SSH events logged via auditd + journald.│
+│   SSH events logged via auditd + journald. │
 
 │   Unauthorized actions are automatically   │
 
-│   flagged as “skill issue.”               │
+│   flagged as “skill issue.”                │
 
-└───────────────────────────────────────────┘
+└──────────────────────────────────────────-─┘
 
 EOF
-
+```
 ## Commands Executed
+```
 sudo nano /etc/ssh/sshd_config
 sudo systemctl restart ssh.service
 sudo systemctl status ssh.service
 sudo nano /etc/issue.net
 sudo nano /etc/update-motd
-
+```
